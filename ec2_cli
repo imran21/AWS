@@ -1,0 +1,44 @@
+####To run an instance using a cli###
+##prerequisite (if not available)
+1.keyPair
+2.Security group (with ingress and egress)
+3. Volume (min 8gb for linux)
+
+# To create a keypair and download the keypair locally
+> aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
+#To view the exesting security group
+> aws ec2 describe-security-groups
+
+#To create security droup
+>  aws ec2 create-security-group --group-name cli_nm_1 --description "a sample network group"
+# Now Take the note of the n/w group ID "sg-1ae68170"
+
+# To add protocols and ip address to the security group
+> aws ec2 authorize-security-group-egress --group-id sg-1ae68170 --cidr 0.0.0.0/0 --protocol tcp --port 22  #ssh
+> aws ec2 authorize-security-group-egress --group-id sg-1ae68170 --cidr 0.0.0.0/0 --protocol tcp --port 80  #http
+
+#To create a volume
+> aws ec2 create-volume --size 8 --region us-east-2 --availability-zone us-east-2c --volume-type gp2
+# Now Take the note on the volume-id
+
+#To create a ec2 Instances and run 
+#prerequisite
+1.image-id
+2.Instance-type
+3.keypair
+4.volume
+5.securitygroup
+
+> aws ec2 run-instances --image-id ami-922914f7 --instance-type t2.micro
+  --key-name aws_key_1 
+  --security-group-ids sg-1ae68170
+  --count 1
+  --region us-east-2
+  --tag-specifications 'ResourceType=instance, Tags=[{Key=Name,Value=VM2_cli}]'
+  
+#To stop a Instances
+>  aws ec2 stop-instances --instance-id i-02f7b26906e21d157
+
+#To Terminate a Instances
+> aws ec2 terminate-instances --instance-id i-02f7b26906e21d157 
+NOTE: You can delete a volume 
