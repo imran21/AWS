@@ -1,0 +1,11 @@
+Working on the S3 bucket through the CLI
+
+#To create a bucket
+>  aws s3api create-bucket --bucket imran250601 --create-bucket-configuration  LocationConstraint=us-east-2
+
+#To  Delete a Bucket
+> aws s3api delete-bucket --bucket imran250601 
+
+# To Create a bucket with public permissions
+>aws s3api create-bucket --bucket imran250602 --create-bucket-configuration  LocationConstraint=us-east-2  --acl public-read-write
+
