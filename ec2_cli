@@ -16,6 +16,9 @@
 # To add protocols and ip address to the security group
 > aws ec2 authorize-security-group-egress --group-id sg-1ae68170 --cidr 0.0.0.0/0 --protocol tcp --port 22  #ssh
 > aws ec2 authorize-security-group-egress --group-id sg-1ae68170 --cidr 0.0.0.0/0 --protocol tcp --port 80  #http
+# To create ICMP protocol with port range(0-65535)
+>aws ec2 authorize-security-group-ingress --group-id sg-123abc12
+  --ip-permissions '[{"IpProtocol": "icmp", "FromPort": 3, "ToPort": 4, "IpRanges": [{"CidrIp": "0.0.0.0/0"}]}]'
 
 #To create a volume
 > aws ec2 create-volume --size 8 --region us-east-2 --availability-zone us-east-2c --volume-type gp2
