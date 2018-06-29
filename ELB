@@ -1,0 +1,32 @@
+This file is to create a elb throug the command line
+
+# To Create a Load Balancer
+
+aws elb create-load-balancer --load-balancer-name elb1cli 
+    --listeners "Protocol=HTTP, LoadBalancerPort=80, InstanceProtocol=HTTP, InstancePort=80"
+    --security-groups sg-fba7ca91 
+    --availability-zones us-east-2a
+    
+# To attach a Instances to a Load Balancer
+# Before this step, your instances should be in start state and all its service should be running (httpd).
+
+aws elb register-instances-with-load-balancer --load-balancer-name elb1cli --instances i-02a04cc87a0718fa9 i-075777a4a297e5425
+
+
+#To Deregister instance from the load balancer
+aws elb deregister-instances-from-load-balancer --load-balancer-name elb1cli --instances i-02a04cc87a0718fa9
+
+
+
+#To add/remove availability-zones in the load balancer
+(IMPORTANT >> If your instances in different availability zones, Make sure that those zones are available in the load balancer.)
+aws elb enable-availability-zones-for-load-balancer --load-balancer-name my-load-balancer --availability-zones us-west-2b
+
+
+#Cross-Zone-Load-Balancing 
+#(IMPORTANT >> IT is important when creating
+  * If aws elb with cli,
+  * If ec2 instance is different from elb zone)
+  
+#To Distribute load to instance on one or different availability zones
+aws elb modify-load-balancer-attributes --load-balancer-name my-loadbalancer --load-balancer-attributes "{\"CrossZoneLoadBalancing\":{\"Enabled\":true}}"
